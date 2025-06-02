@@ -32,20 +32,17 @@ const showsucces = ref(false);
 const showdanger = ref(false);
 const showinfo = ref(false);
 const btnload = ref(false);
-const estatus = ref('');
 
 const pdf_colaboradores_url = ref('');
 const pdf_cif_url = ref('');
 
 const openModal = () => {
-    estatus.value = ''
     form.reset();
     showmodal.value = true;
 } 
 
 const closeModal = () => {
     showmodal.value = false;
-    estatus.value = ''
     form.reset();
 }
 
@@ -114,7 +111,6 @@ const Edit = async (id) => {
         form.pdf_colaboradores = resp.data.pdf_colaboradores
         form.pdf_cif = resp.data.pdf_cif
         form.status = resp.data.status
-        estatus.value = resp.data.nombre
         pdf_colaboradores_url.value = resp.data.pdf_colaboradores_url;
         pdf_cif_url.value = resp.data.pdf_cif_url;
 
@@ -132,7 +128,7 @@ const Delete = async (id) => {
 
     infoToast('Elimnando la solicitud.....')
     try {
-        let resp = await axios.delete(route('delete.cliente', id));       
+        let resp = await axios.delete(route('delete.cliente', id));        
         showinfo.value = false;
         router.reload({ only: ['Documentos'] });
         succesToast(resp.data.msg)
@@ -210,10 +206,6 @@ const infoToast = (text) => {
             <form @submit.prevent="submit">
                 <div class="p-4 md:p-5 space-y-4">                
                     <div class="grid grid-cols-1 sm:grid-cols-1 gap-4">
-                        <div class="flex justify-end gap-1">
-                            <span>Estatus:</span>
-                            <span>{{estatus}}</span>
-                        </div>
                         <div>
                             <InputLabel for="rfc" value="Rfc" />
                             <TextInput

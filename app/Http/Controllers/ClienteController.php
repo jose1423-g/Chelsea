@@ -7,13 +7,32 @@ use App\Models\Documentos;
 use App\Models\Estatus;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Auth;
 
 class ClienteController extends Controller
 {
     public function Index () {
 
+        $usuario_id = Auth::id();
+
         $documentos = Documentos::from('documentos as t1')
-        ->leftJoin('estatus as t2', 't1.status', '=', 't2.id')->get();
+        ->leftJoin('estatus as t2', 't1.status', '=', 't2.id')        
+        ->select(
+            't1.id',
+            't1.rfc',
+            't1.razon_social',            
+            't1.nombre_comercial',
+            't1.representante_legal',
+            't1.antiguedad',
+            't1.afluencia',
+            't1.numero_colaboradores',
+            't1.pdf_colaboradores',
+            't1.pdf_cif',
+            't1.status',
+            't2.nombre',
+        )
+        ->where('usuario_fk', $usuario_id)
+        ->get();
 
         foreach ($documentos as $item) {
             $item->pdf_colaboradores = Storage::url($item->pdf_colaboradores);
@@ -31,6 +50,8 @@ class ClienteController extends Controller
     }
 
     public function Store (Request $request) {
+
+        $usuario_id = Auth::id();
         
         $request->validate([
             'rfc' => 'required',
@@ -83,6 +104,7 @@ class ClienteController extends Controller
                     'pdf_colaboradores' => $pdf_colaboradores,
                     'pdf_cif' => $pdf_cif,
                     'status' => $request->status,
+                    'usuario_fk' => $usuario_id,
                 ]
             );   
             return response()->json(['msg' => 'Solicitud enviada.'], 200);

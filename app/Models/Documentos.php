@@ -20,5 +20,6 @@ class Documentos extends Model
         'pdf_colaboradores',
         'pdf_cif',
         'status',
+        'usuario_fk'
     ];
 }
