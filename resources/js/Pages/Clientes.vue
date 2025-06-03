@@ -104,7 +104,7 @@ const ChangeAfluencia =  (e) => {
 }
 
 const ChangeNumerocolaboradores =  (e) => {
-    form.pdf_cif = e.target.files[0]
+    form.numero_colaboradores = e.target.files[0]
 }
 
 const ChangeColaboradores =  (e) => {
