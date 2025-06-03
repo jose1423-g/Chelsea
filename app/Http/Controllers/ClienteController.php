@@ -36,11 +36,10 @@ class ClienteController extends Controller
         ->get();
 
         foreach ($documentos as $item) {
-            $item->pdf_colaboradores = Storage::url($item->pdf_colaboradores);
-            $item->pdf_cif = Storage::url($item->pdf_cif);
-            $item->razon_social = Storage::url($item->razon_social);
-            $item->pdf_cif = Storage::url($item->pdf_cif);
-            $item->rfc_file = Storage::url($item->rfc_file);
+            $item->pdf_colaboradores  ? $item->pdf_colaboradores = Storage::url($item->pdf_colaboradores) : '';
+            $item->razon_social  ? $item->razon_social = Storage::url($item->razon_social) : '';
+            $item->pdf_cif  ? $item->pdf_cif = Storage::url($item->pdf_cif) : '';            
+            $item->rfc_file_url  ? $item->rfc_file_url = Storage::url($item->rfc_file) : '';
         }        
 
         $estatus = Estatus::all();

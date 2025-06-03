@@ -30,8 +30,10 @@ class AdminController extends Controller
         )->get();
 
         foreach ($documentos as $item) {
-            $item->pdf_colaboradores =  Storage::url($item->pdf_colaboradores);        
-            $item->pdf_cif = Storage::url($item->pdf_cif);
+            $item->pdf_colaboradores  ? $item->pdf_colaboradores = Storage::url($item->pdf_colaboradores) : '';
+            $item->razon_social  ? $item->razon_social = Storage::url($item->razon_social) : '';
+            $item->pdf_cif  ? $item->pdf_cif = Storage::url($item->pdf_cif) : '';            
+            $item->rfc_file_url  ? $item->rfc_file_url = Storage::url($item->rfc_file) : '';
         }        
 
         $estatus = Estatus::all();
@@ -109,7 +111,14 @@ class AdminController extends Controller
             
             $data = Documentos::find($id);
 
-            $data->pdf_colaboradores_url =  Storage::url($data->pdf_colaboradores);
+            $data->rfc_file_url =  Storage::url($data->rfc_file);
+            $data->razon_social_url =  Storage::url($data->razon_social);
+            $data->nombre_comercial_url =  Storage::url($data->nombre_comercial);
+            $data->representante_legal_url =  Storage::url($data->representante_legal);
+            $data->antiguedad_url =  Storage::url($data->antiguedad);
+            $data->afluencia_url =  Storage::url($data->afluencia);
+            $data->numero_colaboradores_url =  Storage::url($data->numero_colaboradores);
+            $data->pdf_colaboradores_url =  Storage::url($data->pdf_colaboradores);                        
             $data->pdf_cif_url =  Storage::url($data->pdf_cif);
 
             return $data;

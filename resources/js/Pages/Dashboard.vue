@@ -32,6 +32,13 @@ const btnload = ref(false);
 
 const pdf_colaboradores_url = ref('');
 const pdf_cif_url = ref('');
+const rfc_file_url = ref('');
+const razon_social_url = ref('');
+const nombre_comercial_url = ref('');
+const representante_legal_url = ref('');
+const antiguedad_url = ref('');
+const afluencia_url = ref('');
+const numero_colaboradores_url = ref('');
 
 const openModal = () => {
     showmodal.value = true;
@@ -44,6 +51,7 @@ const closeModal = () => {
 const form = useForm({
     id: '',
     rfc: '',
+    rfc_file: '',
     razon_social: '',
     nombre_comercial: '',
     representante_legal: '',
@@ -72,7 +80,6 @@ const submit =  async () => {
             showsucces.value = false;
         }, 3000);
     } catch (error) {
-        console.log(error);
         closeModal();
         dangerToast(error.response.data.msg)
         setTimeout(() => {            
@@ -102,11 +109,21 @@ const Edit = async (id) => {
         form.pdf_colaboradores = resp.data.pdf_colaboradores
         form.pdf_cif = resp.data.pdf_cif
         form.status = resp.data.status
+        // pdf_colaboradores_url.value = resp.data.pdf_colaboradores_url;
+        // pdf_cif_url.value = resp.data.pdf_cif_url;
+
+
+        rfc_file_url.value = resp.data.rfc_file_url 
+        razon_social_url.value = resp.data.razon_social_url 
+        nombre_comercial_url.value = resp.data.nombre_comercial_url 
+        representante_legal_url.value = resp.data.representante_legal_url 
+        antiguedad_url.value = resp.data.antiguedad_url 
+        afluencia_url.value = resp.data.afluencia_url 
+        numero_colaboradores_url.value = resp.data.numero_colaboradores_url 
         pdf_colaboradores_url.value = resp.data.pdf_colaboradores_url;
         pdf_cif_url.value = resp.data.pdf_cif_url;
 
     } catch (error) {
-        console.log(error)
         dangerToast(error.response.data.msg)
         setTimeout(() => {
             showdanger.value = false;
@@ -205,77 +222,39 @@ const infoToast = (text) => {
                         />
                     </div>
                     <div>
+                        <InputLabel for="rfc" value="Archivo rfc" />
+                        <a v-if="rfc_file_url" class="text-sm text-blue-500 mt-2" :href="rfc_file_url" target="_blank" rel="noopener noreferrer">{{rfc_file_url}}</a>
+                    </div>
+                    <div>
                         <InputLabel for="razon_social" value="Razon social" />
-                        <TextInput
-                            id="razon_social"
-                            type="text"
-                            v-model="form.razon_social"                                
-                            class="mt-1 block w-full"
-                        />
+                        <a v-if="razon_social_url" class="text-sm text-blue-500 mt-2" :href="razon_social_url" target="_blank" rel="noopener noreferrer">{{razon_social_url}}</a>
                     </div>
                     <div>
                         <InputLabel for="nombre_comercial" value="Nombre comercial" />
-                        <TextInput
-                            id="nombre_comercial"
-                            type="text"
-                            v-model="form.nombre_comercial"                                
-                            class="mt-1 block w-full"
-                        />
+                        <a v-if="nombre_comercial_url" class="text-sm text-blue-500 mt-2" :href="nombre_comercial_url" target="_blank" rel="noopener noreferrer">{{nombre_comercial_url}}</a>
                     </div>
                     <div>
                         <InputLabel for="representante_legal" value="Representante legal" />
-                        <TextInput
-                            id="representante_legal"
-                            type="text"
-                            v-model="form.representante_legal"                                
-                            class="mt-1 block w-full"
-                        />
+                        <a v-if="representante_legal_url" class="text-sm text-blue-500 mt-2" :href="representante_legal_url" target="_blank" rel="noopener noreferrer">{{representante_legal_url}}</a>
                     </div>
                     <div>
                         <InputLabel for="antiguedad" value="Antiguedad" />
-                        <TextInput
-                            id="antiguedad"
-                            type="text"
-                            v-model="form.antiguedad"                                
-                            class="mt-1 block w-full"
-                        />
+                        <a v-if="antiguedad_url" class="text-sm text-blue-500 mt-2" :href="antiguedad_url" target="_blank" rel="noopener noreferrer">{{antiguedad_url}}</a>
                     </div>
                     <div>
                         <InputLabel for="afluencia" value="Afluencia" />
-                        <TextInput
-                            id="afluencia"
-                            type="text"
-                            v-model="form.afluencia"                                
-                            class="mt-1 block w-full"
-                        />
+                        <a v-if="afluencia_url" class="text-sm text-blue-500 mt-2" :href="afluencia_url" target="_blank" rel="noopener noreferrer">{{afluencia_url}}</a>
                     </div>
                     <div>
                         <InputLabel for="numero_colaboradores" value="Numero de colaboradores" />
-                        <TextInput
-                            id="numero_colaboradores"
-                            type="number"
-                            v-model="form.numero_colaboradores"                                
-                            class="mt-1 block w-full"
-                        />
+                        <a v-if="numero_colaboradores_url" class="text-sm text-blue-500 mt-2" :href="numero_colaboradores_url" target="_blank" rel="noopener noreferrer">{{numero_colaboradores_url}}</a>
                     </div>                        
                     <div>
                         <InputLabel for="pdf_colaboradores" value="Pdf colaboradores" />
-                        <input
-                            id="pdf_colaboradores"
-                            type="file"
-                            class="block w-full mt-1 text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-sm file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
-                            @change="ChangeColaboradores"
-                        />
                         <a v-if="pdf_colaboradores_url" class="text-sm text-blue-500 mt-2" :href="pdf_colaboradores_url" target="_blank" rel="noopener noreferrer">{{pdf_colaboradores_url}}</a>
                     </div>                        
                     <div>
                         <InputLabel for="pdf_cif" value="Pdf cif" />
-                        <input
-                            id="pdf_cif"
-                            type="file"
-                            class="block w-full mt-1 text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-sm file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
-                            @change="ChangeCif"
-                        />
                         <a v-if="pdf_cif_url" class="text-sm text-blue-500 mt-2" :href="pdf_cif_url" target="_blank" rel="noopener noreferrer">{{pdf_cif_url}}</a>
                     </div>
                     <div>
@@ -306,7 +285,7 @@ const infoToast = (text) => {
                 >
                     <div class="p-6 text-gray-900 flex justify-between">
                         <h2 class="text-xl text-semibold">Solicitudes</h2>
-                        <PrimaryButton type="button" @click="openModal">Nueva</PrimaryButton>
+                        <!-- <PrimaryButton type="button" @click="openModal">Nueva</PrimaryButton> -->
                     </div>
                     <div>
                         <div class="relative overflow-x-auto">
@@ -315,6 +294,9 @@ const infoToast = (text) => {
                                     <tr>
                                         <th scope="col" class="px-6 py-3">
                                             rfc
+                                        </th>
+                                        <th scope="col" class="px-6 py-3">
+                                            rfc file
                                         </th>
                                         <th scope="col" class="px-6 py-3">
                                             Razon social
@@ -339,10 +321,21 @@ const infoToast = (text) => {
                                             {{ item.rfc }}
                                         </td>
                                         <td class="px-6 py-4">
-                                            {{ item.razon_social }}
+                                            <a :href="item.rfc_file" target="_blank" class="hover:text-blue-500">{{ item.rfc_file }}</a>
                                         </td>
                                         <td class="px-6 py-4">
-                                            {{ item.nombre }}
+                                            <a :href="item.razon_social" target="_blank" class="hover:text-blue-500">{{ item.razon_social }}</a>
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <template v-if="item.nombre == 'Pendiente'">
+                                                <p class="text-yellow-500">{{ item.nombre }}</p>
+                                            </template>
+                                            <template v-if="item.nombre == 'Proceso'">
+                                                <p class="text-blue-500">{{item.nombre}}</p>
+                                            </template>
+                                            <template v-if="item.nombre == 'Terminado'">
+                                                <p class="text-green-500">{{item.nombre}}</p>
+                                            </template>
                                         </td>
                                         <td class="px-6 py-4">
                                             <a :href="item.pdf_colaboradores" target="_blank" class="hover:text-blue-500">{{ item.pdf_colaboradores }}</a>
