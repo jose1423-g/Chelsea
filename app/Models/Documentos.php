@@ -20,6 +20,7 @@ class Documentos extends Model
         'pdf_colaboradores',
         'pdf_cif',
         'status',
-        'usuario_fk'
+        'usuario_fk',
+        'rfc_file',
     ];
 }

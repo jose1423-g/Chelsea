@@ -20,6 +20,7 @@ class ClienteController extends Controller
         ->select(
             't1.id',
             't1.rfc',
+            't1.rfc_file',
             't1.razon_social',            
             't1.nombre_comercial',
             't1.representante_legal',
@@ -37,6 +38,9 @@ class ClienteController extends Controller
         foreach ($documentos as $item) {
             $item->pdf_colaboradores = Storage::url($item->pdf_colaboradores);
             $item->pdf_cif = Storage::url($item->pdf_cif);
+            $item->razon_social = Storage::url($item->razon_social);
+            $item->pdf_cif = Storage::url($item->pdf_cif);
+            $item->rfc_file = Storage::url($item->rfc_file);
         }        
 
         $estatus = Estatus::all();
@@ -54,7 +58,7 @@ class ClienteController extends Controller
         $usuario_id = Auth::id();
         
         $request->validate([
-            'rfc' => 'required',
+            'rfc' => 'required|size:12',            
             'razon_social' => 'required',
             'nombre_comercial' => 'required',
             'representante_legal' => 'required',
@@ -64,6 +68,7 @@ class ClienteController extends Controller
             'pdf_cif' => 'required',
         ],[
             'rfc.required' => 'El campo rfc es obligatorio.',
+            'rfc.size' => 'El RFC debe tener exactamente 12 caracteres.',
             'razon_social.required' => 'El campo razon social es obligatorio.',
             'nombre_comercial.required' => 'El campo nombre comercial es obligatorio.',
             'representante_legal.required' => 'El campo representante legal es obligatorio.',
@@ -74,35 +79,22 @@ class ClienteController extends Controller
         ]);
 
         try {
-            
-            $pdf_colaboradores = '';
-            if ($request->hasFile('pdf_colaboradores')) {
-                $pdf_colaboradores = $request->file('pdf_colaboradores')->store('pdf');    
-            } else {
-                $pdf_colaboradores  = $request->pdf_colaboradores;
-            }
 
-            $pdf_cif = '';
-            if ($request->hasFile('pdf_cif')) {
-                $pdf_cif = $request->file('pdf_cif')->store('pdf');
-            } else {
-                $pdf_cif  = $request->pdf_cif;
-            }
-            
             Documentos::updateOrCreate(
                 [
                     'id' => $request->id
                 ],
                 [
                     'rfc' => $request->rfc,
-                    'razon_social' => $request->razon_social, 
-                    'nombre_comercial' => $request->nombre_comercial,
-                    'representante_legal' => $request->representante_legal,
-                    'antiguedad' => $request->antiguedad, 
-                    'afluencia' => $request->afluencia,
-                    'numero_colaboradores' => $request->numero_colaboradores,
-                    'pdf_colaboradores' => $pdf_colaboradores,
-                    'pdf_cif' => $pdf_cif,
+                    'rfc_file' => $request->rfc_file,
+                    'razon_social' => $request->hasFile('razon_social')  ? $request->file('razon_social')->store('pdf') : $request->razon_social, 
+                    'nombre_comercial' => $request->hasFile('nombre_comercial')  ? $request->file('nombre_comercial')->store('pdf') : $request->nombre_comercial,
+                    'representante_legal' => $request->hasFile('representante_legal')  ? $request->file('representante_legal')->store('pdf') : $request->representante_legal,
+                    'antiguedad' => $request->hasFile('antiguedad')  ? $request->file('antiguedad')->store('pdf') : $request->antiguedad, 
+                    'afluencia' => $request->hasFile('afluencia')  ? $request->file('afluencia')->store('pdf') : $request->afluencia,
+                    'numero_colaboradores' => $request->hasFile('numero_colaboradores')  ? $request->file('numero_colaboradores')->store('pdf') : $request->numero_colaboradores,
+                    'pdf_colaboradores' => $request->hasFile('pdf_colaboradores')  ? $request->file('pdf_colaboradores')->store('pdf') : $request->pdf_colaboradores,
+                    'pdf_cif' => $request->hasFile('pdf_cif')  ? $request->file('pdf_cif')->store('pdf') : $request->pdf_cif,
                     'status' => $request->status,
                     'usuario_fk' => $usuario_id,
                 ]
@@ -117,7 +109,14 @@ class ClienteController extends Controller
         try {
             
             $data = Documentos::find($id);
-
+            
+            $data->rfc_file_url =  Storage::url($data->rfc_file);
+            $data->razon_social_url =  Storage::url($data->razon_social);
+            $data->nombre_comercial_url =  Storage::url($data->nombre_comercial);
+            $data->representante_legal_url =  Storage::url($data->representante_legal);
+            $data->antiguedad_url =  Storage::url($data->antiguedad);
+            $data->afluencia_url =  Storage::url($data->afluencia);
+            $data->numero_colaboradores_url =  Storage::url($data->numero_colaboradores);
             $data->pdf_colaboradores_url =  Storage::url($data->pdf_colaboradores);
             $data->pdf_cif_url =  Storage::url($data->pdf_cif);
 
